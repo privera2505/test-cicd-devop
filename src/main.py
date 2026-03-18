@@ -1,0 +1,8 @@
+import uvicorn
+from os import getenv
+
+API_HOST = getenv("SIDECAR_HOST", "0.0.0.0")
+API_PORT = getenv("SIDECAR_PORT", "8000")
+
+if __name__ == "__main__":
+    uvicorn.run("api:app", host=API_HOST, port=int(API_PORT))
