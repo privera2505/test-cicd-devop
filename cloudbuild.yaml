@@ -39,6 +39,26 @@ steps:
         echo "===== service.yaml ====="
         cat service.yaml
 
+  # Crear release.yaml
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        cat <<EOF > release.yaml
+        apiVersion: deploy.cloud.google.com/v1
+        kind: Release
+        metadata:
+          name: release-${SHORT_SHA}
+        spec:
+          deliveryPipeline: ${_PIPELINE_NAME}
+          images:
+            app: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
+        EOF
+
+        echo "===== release.yaml ====="
+        cat release.yaml
+
 #  # Crear skaffold.yaml
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    entrypoint: bash
