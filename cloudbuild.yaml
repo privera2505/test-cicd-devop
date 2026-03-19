@@ -17,6 +17,9 @@ steps:
             region: ${_REGION}
         EOF
 
+        echo "Contenido de skaffold.yaml:"
+        cat skaffold.yaml
+
   #Build imagen
   - name: 'gcr.io/cloud-builders/docker'
     args:
