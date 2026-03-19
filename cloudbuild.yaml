@@ -76,7 +76,8 @@ steps:
           tagPolicy:
             gitCommit: {}
         deploy:
-          cloudrun: {}
+          cloudrun: 
+            region: ${_REGION}
         EOF
 
         echo "===== skaffold.yaml ====="
