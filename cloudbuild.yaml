@@ -32,29 +32,29 @@ steps:
             spec:
               containers:
                 - image: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
-                    ports:
-                      - containerPort: ${_CONTAINER_PORT}
+                  ports:
+                    - containerPort: ${_CONTAINER_PORT}
         EOF
 
         echo "===== service.yaml ====="
         cat service.yaml
 
-  # Crear skaffold.yaml
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        cat <<EOF > skaffold.yaml
-        apiVersion: skaffold/v2beta26
-        kind: Config
-        manifests:
-          rawYaml:
-            - service.yaml
-        EOF
-
-        echo "===== skaffold.yaml ====="
-        cat skaffold.yaml
+#  # Crear skaffold.yaml
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    entrypoint: bash
+#    args:
+#      - -c
+#      - |
+#        cat <<EOF > skaffold.yaml
+#        apiVersion: skaffold/v2beta26
+#        kind: Config
+#        manifests:
+#          rawYaml:
+#            - service.yaml
+#        EOF
+#
+#        echo "===== skaffold.yaml ====="
+#        cat skaffold.yaml
 
   #Crear release en Cloud Deploy
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
