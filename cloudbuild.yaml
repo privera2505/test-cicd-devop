@@ -59,22 +59,26 @@ steps:
         echo "===== release.yaml ====="
         cat release.yaml
 
-#  # Crear skaffold.yaml
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    entrypoint: bash
-#    args:
-#      - -c
-#      - |
-#        cat <<EOF > skaffold.yaml
-#        apiVersion: skaffold/v2beta26
-#        kind: Config
-#        manifests:
-#          rawYaml:
-#            - service.yaml
-#        EOF
-#
-#        echo "===== skaffold.yaml ====="
-#        cat skaffold.yaml
+  # Crear skaffold.yaml
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        cat <<EOF > skaffold.yaml
+        apiVersion: skaffold/v4beta7
+        kind: Config
+        deploy:
+          cloudrun:
+            projectId: $PROJECT_ID
+            region: ${_REGION}
+          manifests:
+            rawYaml:
+              - service.yaml
+        EOF
+
+        echo "===== skaffold.yaml ====="
+        cat skaffold.yaml
 
   #Crear release en Cloud Deploy
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
