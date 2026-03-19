@@ -68,8 +68,14 @@ steps:
         cat <<EOF > skaffold.yaml
         apiVersion: skaffold/v4beta7
         kind: Config
+        metadata:
+          name: ${_CONTAINER_NAME}
+        build:
+          artifacts: 
+            - image: ${_CONTAINER_NAME}=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
         deploy:
-          cloudrun: {}
+          cloudrun:
+            region: ${_REGION}
         EOF
 
         echo "===== skaffold.yaml ====="
