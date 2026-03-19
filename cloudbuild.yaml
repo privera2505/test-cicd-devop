@@ -16,18 +16,6 @@ steps:
       - push
       - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
 
-  #Crear release en Cloud Deploy
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args:
-      - deploy
-      - releases
-      - create
-      - release-${SHORT_SHA}
-      - --delivery-pipeline=${_PIPELINE_NAME}
-      - --region=${_REGION}
-      - --images=app=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
-
   # Crear service.yaml
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: bash
@@ -67,3 +55,15 @@ steps:
 
         echo "===== skaffold.yaml ====="
         cat skaffold.yaml
+
+  #Crear release en Cloud Deploy
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - deploy
+      - releases
+      - create
+      - release-${SHORT_SHA}
+      - --delivery-pipeline=${_PIPELINE_NAME}
+      - --region=${_REGION}
+      - --images=app=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
