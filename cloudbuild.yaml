@@ -69,9 +69,7 @@ steps:
         apiVersion: skaffold/v4beta7
         kind: Config
         deploy:
-          cloudrun:
-            projectId: $PROJECT_ID
-            region: ${_REGION}
+          cloudrun: {}
           manifests:
             rawYaml:
               - service.yaml
