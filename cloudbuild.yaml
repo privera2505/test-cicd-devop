@@ -51,9 +51,9 @@ steps:
         build:
           artifacts: 
             - image: containerurl
-            context: .
-            docker:
-              dockerfile: Dockerfile
+              context: .
+              docker:
+                dockerfile: Dockerfile
           tagPolicy:
             gitCommit: {}
         manifests:
