@@ -85,15 +85,14 @@ steps:
         echo "Esperando a que la revisión se registre..."
         sleep 10
 
-        # Obtener la revisión recién creada
-        CANARY_REVISION=$(gcloud run services describe ${_SERVICE_NAME} \
+        # Usamos $$ para que Cloud Build no las confunda con sus propias variables
+        CANARY_REVISION=$$(gcloud run services describe ${_SERVICE_NAME} \
           --region=${_REGION} \
           --format='value(status.latestCreatedRevisionName)')
 
-        # Obtener la URL única de esa revisión (bypass traffic split)
-        CANARY_URL=$(gcloud run revisions describe ${CANARY_REVISION} \
+        CANARY_URL=$$(gcloud run revisions describe $${CANARY_REVISION} \
           --region=${_REGION} \
           --format='value(status.address.url)')
 
-        echo "Revisión detectada: $CANARY_REVISION"
-        echo "URL de prueba: $CANARY_URL"
+        echo "Revisión detectada: $${CANARY_REVISION}"
+        echo "URL de prueba: $${CANARY_URL}"
