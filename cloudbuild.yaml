@@ -86,7 +86,7 @@ steps:
                   fi
 
                   echo "Health check pasado con éxito"
-            timeout: 120s
+            timeout: 120
         EOF
 
         echo "===== VERIFICANDO SKAFFOLD.YAML ====="
