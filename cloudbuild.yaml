@@ -28,7 +28,7 @@ steps:
         metadata:
           name: ${_SERVICE_NAME}
           annotations:
-            run.googleapis.com/ingress: internal-and-cloud-load-balancing
+            run.googleapis.com/ingress: ${_INGRESS_TYPE}
         spec:
           template:
             spec:
@@ -63,6 +63,36 @@ steps:
             - service.yaml
         deploy:
           cloudrun: {}
+        verify:
+          - name: smoke-test
+            container:
+              name: smoke-test
+              image: google/cloud-sdk:alpine
+              command: ["sh"]
+              args:
+                - "-c"
+                - |
+                  # Obtenemos la URL del servicio usando las variables de Cloud Build
+                  # Escapamos \$ para que el shell de la verificación lo ejecute en tiempo real
+                  echo "Obteniendo URL para el servicio: ${_SERVICE_NAME} en ${_REGION}"
+                  
+                  SERVICE_URL=\$(gcloud run services describe ${_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
+                  
+                  echo "Probando URL: \$SERVICE_URL/${_HEALTH_CHECK}"
+                  
+                  # El token es obligatorio porque el ingress es INTERNAL
+                  HTTP_CODE=\$(curl -s -o /dev/null -w "%{http_code}" \\
+                    -H "Authorization: Bearer \$(gcloud auth print-identity-token)" \\
+                    "\$SERVICE_URL/${_HEALTH_CHECK}")
+                  
+                  echo "Código HTTP recibido: \$HTTP_CODE"
+                  
+                  if [ "\$HTTP_CODE" != "200" ]; then
+                    echo "Error: Health check falló con código \$HTTP_CODE"
+                    exit 1
+                  fi
+                  echo "Health check pasado con éxito"
+            timeout: 120s
         EOF
 
         echo "===== VERIFICANDO SKAFFOLD.YAML ====="
