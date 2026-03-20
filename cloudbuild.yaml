@@ -76,14 +76,12 @@ steps:
                   # Escapamos \$ para que el shell de la verificación lo ejecute en tiempo real
                   echo "Obteniendo URL para el servicio: ${_SERVICE_NAME} en ${_REGION}"
                   
-                  \SERVICE_URL=$$(gcloud run services describe ${_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
-                  
-                  echo "Probando URL: \$SERVICE_URL/${_HEALTH_CHECK}"
+                  echo "Probando URL: $$(gcloud run services describe ${_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')/${_HEALTH_CHECK}"
                   
                   # El token es obligatorio porque el ingress es INTERNAL
                   HTTP_CODE=\$(curl -s -o /dev/null -w "%{http_code}" \\
                     -H "Authorization: Bearer \$(gcloud auth print-identity-token)" \\
-                    "\$SERVICE_URL/${_HEALTH_CHECK}")
+                    "$$(gcloud run services describe ${_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')/${_HEALTH_CHECK}")
                   
                   echo "Código HTTP recibido: \$HTTP_CODE"
                   
