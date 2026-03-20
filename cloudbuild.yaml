@@ -71,4 +71,5 @@ steps:
       - release-${SHORT_SHA}
       - --delivery-pipeline=${_PIPELINE_NAME}
       - --region=${_REGION}
+      - --source=.
       - --images=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
