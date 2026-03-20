@@ -39,27 +39,27 @@ steps:
 #        echo "===== VERIFICANDO SERVICE.YAML ====="
 #        cat service.yaml
 
-  # 4. Crear skaffold.yaml con URL COMPLETA
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: bash
-    args:
-      - -c
-      - |
-        cat <<EOF > skaffold.yaml
-        apiVersion: skaffold/v4beta7
-        kind: Config
-        build:
-          artifacts: 
-            - image: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}
-        manifests:
-          rawYaml:
-            - service.yaml
-        deploy:
-          cloudrun: {}
-        EOF
-
-        echo "===== VERIFICANDO SKAFFOLD.YAML ====="
-        cat skaffold.yaml
+#  # 4. Crear skaffold.yaml con URL COMPLETA
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    entrypoint: bash
+#    args:
+#      - -c
+#      - |
+#        cat <<EOF > skaffold.yaml
+#        apiVersion: skaffold/v4beta7
+#        kind: Config
+#        build:
+#          artifacts: 
+#            - image: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}
+#        manifests:
+#          rawYaml:
+#            - service.yaml
+#        deploy:
+#          cloudrun: {}
+#        EOF
+#
+#        echo "===== VERIFICANDO SKAFFOLD.YAML ====="
+#        cat skaffold.yaml
 
   # 5. Crear release uniendo todo
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
