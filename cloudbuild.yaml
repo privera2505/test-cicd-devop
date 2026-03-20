@@ -31,7 +31,8 @@ steps:
           template:
             spec:
               containers:
-                - image: ${_CONTAINER_NAME}
+                - image: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}
+                  name: ${_CONTAINER_NAME}
                   ports:
                     - containerPort: ${_CONTAINER_PORT}
         EOF
@@ -53,7 +54,7 @@ steps:
           name: ${_CONTAINER_NAME}
         build:
           artifacts: 
-            - image: ${_CONTAINER_NAME}
+            - image: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}
         manifests:
           rawYaml:
             - service.yaml
