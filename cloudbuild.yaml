@@ -34,12 +34,6 @@ steps:
                 - image: ${_CONTAINER_NAME}
                   ports:
                     - containerPort: ${_CONTAINER_PORT}
-          traffic:
-            - tag: check 
-              revisionName: ${_SERVICE_NAME}-$SHORT_SHA
-              percent: 0
-            - latestRevision: true
-              percent: 100
         EOF
 
         echo "===== service.yaml ====="
@@ -70,30 +64,14 @@ steps:
         echo "===== skaffold.yaml ====="
         cat skaffold.yaml
 
-#  #Crear release en Cloud Deploy
-#  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#    entrypoint: gcloud
-#    args:
-#      - deploy
-#      - releases
-#      - create
-#      - release-${SHORT_SHA}
-#      - --delivery-pipeline=${_PIPELINE_NAME}
-#      - --region=${_REGION}
-#      - --images=${_CONTAINER_NAME}=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
-
-  #Obtener la url de la revision
+  #Crear release en Cloud Deploy
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: bash
+    entrypoint: gcloud
     args:
-      - -c
-      - |
-        echo "Esperando propagación del Tag..."
-        sleep 15
-        
-        # Obtener la URL del tag 'check'
-        CANARY_URL=$$(gcloud run services describe ${_SERVICE_NAME} \
-          --region=${_REGION} \
-          --format='value(status.traffic.filter(tag="check")[0].url)')
-
-        echo "URL de prueba (Tag check): $${CANARY_URL}"
+      - deploy
+      - releases
+      - create
+      - release-${SHORT_SHA}
+      - --delivery-pipeline=${_PIPELINE_NAME}
+      - --region=${_REGION}
+      - --images=${_CONTAINER_NAME}=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
