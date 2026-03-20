@@ -16,48 +16,29 @@ steps:
       - push
       - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
 
-#  # Crear service.yaml
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    entrypoint: bash
-#    args:
-#      - -c
-#      - |
-#        cat <<EOF > service.yaml
-#        apiVersion: serving.knative.dev/v1
-#        kind: Service
-#        metadata:
-#          name: ${_SERVICE_NAME}
-#        spec:
-#          template:
-#            spec:
-#              containers:
-#                - image: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
-#                  ports:
-#                    - containerPort: ${_CONTAINER_PORT}
-#        EOF
-#
-#        echo "===== service.yaml ====="
-#        cat service.yaml
-#
-#  # Crear release.yaml
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    entrypoint: bash
-#    args:
-#      - -c
-#      - |
-#        cat <<EOF > release.yaml
-#        apiVersion: deploy.cloud.google.com/v1
-#        kind: Release
-#        metadata:
-#          name: release-${SHORT_SHA}
-#        spec:
-#          deliveryPipeline: ${_PIPELINE_NAME}
-#          images:
-#            app: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}:$SHORT_SHA
-#        EOF
-#
-#        echo "===== release.yaml ====="
-#        cat release.yaml
+  # Crear service.yaml
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        cat <<EOF > service.yaml
+        apiVersion: serving.knative.dev/v1
+        kind: Service
+        metadata:
+          name: ${_SERVICE_NAME}
+        spec:
+          template:
+            spec:
+              containers:
+                - image: ${_CONTAINER_NAME}
+                  ports:
+                    - containerPort: ${_CONTAINER_PORT}
+        EOF
+
+        echo "===== service.yaml ====="
+        cat service.yaml
+
 
   # Crear skaffold.yaml
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -72,12 +53,12 @@ steps:
           name: ${_CONTAINER_NAME}
         build:
           artifacts: 
-            - image: ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REPO}/${_CONTAINER_NAME}
-          tagPolicy:
-            gitCommit: {}
+            - image: ${_CONTAINER_NAME}
+        manifests:
+          rawYaml:
+            - service.yaml
         deploy:
-          cloudrun: 
-            region: ${_REGION}
+          cloudrun: {}
         EOF
 
         echo "===== skaffold.yaml ====="
