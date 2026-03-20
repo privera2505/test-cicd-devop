@@ -51,11 +51,22 @@ steps:
         build:
           artifacts: 
             - image: containerurl
+            context: .
+            docker:
+              dockerfile: Dockerfile
+          tagPolicy:
+            gitCommit: {}
         manifests:
           rawYaml:
             - service.yaml
         deploy:
           cloudrun: {}
+        profiles:
+          - name: canary
+            deploy:
+              cloudrun:
+                traffic:
+                  - revisionName: ""
         EOF
 
         echo "===== VERIFICANDO SKAFFOLD.YAML ====="
