@@ -34,6 +34,12 @@ steps:
                 - image: ${_CONTAINER_NAME}
                   ports:
                     - containerPort: ${_CONTAINER_PORT}
+          traffic:
+            - tag: check # 
+              revisionName: ${_SERVICE_NAME}-$SHORT_SHA
+              percent: 0
+            - latestRevision: true
+              percent: 100
         EOF
 
         echo "===== service.yaml ====="
@@ -82,17 +88,12 @@ steps:
     args:
       - -c
       - |
-        echo "Esperando a que la revisión se registre..."
-        sleep 10
-
-        # Usamos $$ para que Cloud Build no las confunda con sus propias variables
-        CANARY_REVISION=$$(gcloud run services describe ${_SERVICE_NAME} \
+        echo "Esperando propagación del Tag..."
+        sleep 15
+        
+        # Obtener la URL del tag 'check'
+        CANARY_URL=$$(gcloud run services describe ${_SERVICE_NAME} \
           --region=${_REGION} \
-          --format='value(status.latestCreatedRevisionName)')
+          --format='value(status.traffic.filter(tag="check").url)')
 
-        CANARY_URL=$$(gcloud run revisions describe $${CANARY_REVISION} \
-          --region=${_REGION} \
-          --format='value(status.address.url)')
-
-        echo "Revisión detectada: $${CANARY_REVISION}"
-        echo "URL de prueba: $${CANARY_URL}"
+        echo "URL de prueba (Tag check): $${CANARY_URL}"
