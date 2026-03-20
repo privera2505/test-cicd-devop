@@ -27,6 +27,8 @@ steps:
         kind: Service
         metadata:
           name: ${_SERVICE_NAME}
+          annotations:
+            run.googleapis.com/ingress: internal-and-cloud-load-balancing
         spec:
           template:
             spec:
@@ -51,6 +53,11 @@ steps:
         build:
           artifacts: 
             - image: containerurl
+              context: .
+              docker:
+                dockerfile: Dockerfile
+          tagPolicy:
+            gitCommit: {}
         manifests:
           rawYaml:
             - service.yaml
