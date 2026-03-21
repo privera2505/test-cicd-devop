@@ -67,7 +67,7 @@ steps:
           - name: smoke-test
             container:
               name: smoke-test
-              image: curlimages/curl:latest
+              image: google/cloud-sdk:alpine
               command: ["sh"]
               args:
                 - "-c"
