@@ -75,6 +75,15 @@ steps:
                   echo "Esperando 2 minutos antes de iniciar las pruebas..."
                   sleep 60
 
+                  LAST_REVISION=$$(gcloud run revisions list \
+                    --service=${_SERVICE_NAME} \
+                    --region=${_REGION} \
+                    --sort-by="~creationTimestamp" \
+                    --limit=2 \
+                    --format="value(REVISION)" | tail -n 1)
+                  
+                  echo "$$LAST_REVISION"
+
                   FAILURES=0
 
                   for i in $(seq 1 100); do
