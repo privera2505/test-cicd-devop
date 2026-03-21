@@ -78,7 +78,7 @@ steps:
                   SERVICE_URL=$$(gcloud run services describe ${_SERVICE_NAME} --region=${_REGION} --format='value(status.url)')
 
                   # Generar ID token válido para Cloud Run privado
-                  TOKEN=$$(gcloud auth print-identity-token --audience=$$SERVICE_URL)
+                  TOKEN=$$(gcloud auth print-identity-token --audiences=$$SERVICE_URL)
 
                   echo "Testing $$SERVICE_URL"
                   FAILURES=0
