@@ -4,11 +4,11 @@ app = FastAPI()
 
 @app.get("/api2/test1")
 async def payment_webhook(request: Request):
-    return "Test micro 1"
+    return "Test micro 123"
 
 @app.get("/api2/test2")
 async def payment_webhook(request: Request):
-    return "Test micro 1"
+    return "Test micro 123"
 
 @app.get("/api2/health")
 async def payment_webhook(request: Request):
