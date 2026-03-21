@@ -77,7 +77,7 @@ steps:
 
                   SERVICE_URL=$$(gcloud run services describe ${_SERVICE_NAME} --region= ${_REGION} --format='value(status.url)')
 
-                  echo "Testing $SERVICE_URL"
+                  echo "Testing $$SERVICE_URL"
                   FAILURES=0
 
                   for i in $(seq 1 100); do
