@@ -83,15 +83,15 @@ steps:
                   for i in $(seq 1 100); do
                     HTTP_CODE=$$(curl -s -o /dev/null -w '%{http_code}' "$$SERVICE_URL/${_HEALTH_CHECK}")
 
-                    if [ "$HTTP_CODE" != "200" ]; then
-                      FAILURES=$((FAILURES + 1))
+                    if [ "$$HTTP_CODE" != "200" ]; then
+                      FAILURES=$$((FAILURES + 1))
                       echo "Fallo en intento $i (status: $$HTTP_CODE)"
                     fi
                     done
 
-                    echo "Total fallos: $FAILURES"
+                    echo "Total fallos: $$FAILURES"
 
-                    if [ "$FAILURES" -gt 5 ]; then
+                    if [ "$$FAILURES" -gt 5 ]; then
                       echo "❌ Health check falló"
                       exit 1
                     fi
