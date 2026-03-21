@@ -75,8 +75,7 @@ steps:
                   echo "Esperando 2 minutos antes de iniciar las pruebas..."
                   sleep 120
 
-                  SERVICE_URL=$(gcloud run services describe ${_SERVICE_NAME} \
-                    --region= ${_REGION} --format='value(status.url)')
+                  SERVICE_URL=$$(gcloud run services describe ${_SERVICE_NAME} --region= ${_REGION} --format='value(status.url)')
 
                   echo "Testing $SERVICE_URL"
                   FAILURES=0
