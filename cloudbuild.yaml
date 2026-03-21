@@ -73,7 +73,7 @@ steps:
                 - "-c"
                 - |                  
                   echo "Esperando 2 minutos antes de iniciar las pruebas..."
-                  sleep 1
+                  sleep 60
 
                   FAILURES=0
 
