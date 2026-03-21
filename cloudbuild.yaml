@@ -47,7 +47,7 @@ steps:
     args:
       - -c
       - |
-        cat <<EOF > skaffold.yaml
+        cat <<'EOF' > skaffold.yaml
         apiVersion: skaffold/v4beta7
         kind: Config
         build:
