@@ -2,6 +2,18 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 steps:
+  #0. unit test
+  - name: "python3.13" #Cambiar al lenguaje de programacion que se usa
+    id: "run-unit-tests"
+    entrypoint: bash
+    args:
+    - |
+        echo "Instalando dependencias..."
+        pip install -r requirements.txt
+
+        echo "Ejecutando pruebas unitarias..."
+        pytest
+
   # 1. Build
   - name: 'gcr.io/cloud-builders/docker'
     args:
