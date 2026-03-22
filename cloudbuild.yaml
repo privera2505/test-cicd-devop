@@ -7,6 +7,7 @@ steps:
     id: "run-unit-tests"
     entrypoint: bash
     args:
+    - -c
     - |
         echo "Instalando dependencias..."
         pip install -r requirements.txt
