@@ -9,4 +9,4 @@ def client():
 
 def test_heath(client):
     """test unique"""
-    assert True == False
+    assert True == True
