@@ -37,14 +37,14 @@ steps:
       - |
         echo "Convirtiendo ENV_VARS..."
 
-        ENV_VARS_YAML=$(echo '${_ENV_VARS}' | jq -r '
+        ENV_VARS_YAML=$$(echo '${_ENV_VARS}' | jq -r '
           to_entries
           | map("        - name: \(.key)\n          value: \"\(.value)\"")
           | join("\n")
         ')
 
         echo "===== ENV VARS ====="
-        echo "$ENV_VARS_YAML"
+        echo "$$ENV_VARS_YAML"
 
         cat <<EOF > service.yaml
         apiVersion: serving.knative.dev/v1
@@ -61,7 +61,7 @@ steps:
                   ports:
                     - containerPort: ${_CONTAINER_PORT}
                   env:
-        $ENV_VARS_YAML
+        $$ENV_VARS_YAML
         EOF
 
         echo "===== VERIFICANDO SERVICE.YAML ====="
