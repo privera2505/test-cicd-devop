@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from main import TEST_NAME
+from config import TEST_NAME
 
 app = FastAPI()
 
