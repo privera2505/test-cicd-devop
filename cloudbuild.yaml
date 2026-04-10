@@ -35,6 +35,9 @@ steps:
     args:
       - -c
       - |
+        echo "Instalando jq..."
+        apt-get update && apt-get install -y jq
+
         echo "Convirtiendo ENV_VARS..."
 
         ENV_VARS_YAML=$$(echo '${_ENV_VARS}' | jq -r '
