@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request
-from src.main import TEST_NAME
+from main import TEST_NAME
 
 app = FastAPI()
 
