@@ -42,7 +42,7 @@ steps:
 
         ENV_VARS_YAML=$$(echo '${_ENV_VARS}' | jq -r '
           to_entries
-          | map("        - name: \(.key)\n          value: \"\(.value)\"")
+          | map("          - name: \(.key)\n            value: \"\(.value)\"")
           | join("\n")
         ')
 
