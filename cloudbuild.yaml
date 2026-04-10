@@ -63,6 +63,8 @@ steps:
                 - image: containerurl
                   ports:
                     - containerPort: ${_CONTAINER_PORT}
+                  env:
+        $$ENV_VARS_YAML
         EOF
 
         echo "===== VERIFICANDO SERVICE.YAML ====="
